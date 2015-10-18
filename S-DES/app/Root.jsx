@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {ReduxRouter} from 'redux-router';
-import routes from 'routes';
+import store from 'store';
 import App from 'App';
 // import cookies from 'browser-cookies';
 
@@ -19,7 +18,9 @@ export default class Root extends React.Component {
 
     return (
       <div>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
         {devTools}
       </div>
     );

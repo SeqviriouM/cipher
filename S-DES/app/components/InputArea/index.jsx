@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import cx from 'classnames';
 import {Motion, spring} from 'react-motion';
-import PopUp from 'components/PopUp';
 import Input from 'components/Input';
 import InfoMessage from 'components/InfoMessage';
 import Button from 'components/Button';
@@ -9,6 +8,11 @@ import './styles.scss';
 
 
 export default class Application extends React.Component {
+  static propTypes = {
+    setTextToCrypt: PropTypes.func,
+  };
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -40,11 +44,11 @@ export default class Application extends React.Component {
       })}>
         <div
           className='input-area'
-          style={Object.assign({}, this.props.style, {transform: `scale(${interpolated.scale})`})}
+          style={Object.assign({}, {transform: `scale(${interpolated.scale})`})}
         >
           <form
             className='input-area__form'
-            onSubmit={this.encodeText}
+            onSubmit={this.props.setTextToCrypt}
           >
             <InfoMessage
               className='input-area__info-message'
