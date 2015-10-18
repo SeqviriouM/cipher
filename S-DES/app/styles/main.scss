@@ -1,0 +1,25 @@
+@import '~styles/variables.scss';
+@import '~styles/colors.scss';
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: $c-main_text;
+  background: $c-main_bg;
+  background-size: cover;
+  font: 300 16px/18px Roboto, sans-serif;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}

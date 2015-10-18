@@ -1,0 +1,105 @@
+@import '~styles/variables.scss';
+
+
+.input-area {
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  margin: 40px auto 20px;
+  background: rgba(0,0,0,0.7);
+  padding: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+
+  &__wrapper {
+    height: 100vh;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100vh;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    transition-property: justify-content;
+    transition-duration: 1s;
+    transition-timing-function: linear;
+
+    &_top {
+      -webkit-justify-content: flex-start;
+      -ms-flex-pack: flex-start;
+      justify-content: flex-start;
+      transition-property: justify-content;
+      transition-duration: 2s;;
+      transition-timing-function: linear;
+    }
+  }
+  &__info-message {
+    margin-bottom: 10px;
+
+    font-size: .9em;
+  }
+  &__input {
+    width: 80%;
+    height: 40px;
+    float: left;
+    margin-top: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-sizing: border-box;
+    line-height: 40px;
+    background: #fff;
+    border: 1px solid #fff;
+  }
+  &__submit-button {
+    width: 20%;
+    height: 40px;
+    float: left;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    line-height: 40px;
+    color: #fff;
+  }
+  &__tabs {
+    border-bottom: solid 1px $c-login-window_border;
+
+    font-size: 1.1em;
+    line-height: 60px;
+  }
+  &__window {
+    $width: 500px;
+    $height: 400px;
+
+    position: absolute;
+    z-index: 15; // highly then .login-page__rect
+    top: 50%;
+    left: 50%;
+
+    overflow: hidden;
+
+    width: $width;
+    margin-top: -$height / 2;
+    margin-left: -$width / 2;
+
+    border: 1px solid $c-login-window_border;
+    border-radius: $main-border-radius;
+    background-color: $c-login-window_bg;
+    box-shadow: 0 0 30px 2px $c-main-shadow;
+
+    font-size: 20px;
+  }
+  &__overlay {
+    position: fixed;
+    z-index: 14;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: rgba(0, 0, 0, .7);
+  }
+}
