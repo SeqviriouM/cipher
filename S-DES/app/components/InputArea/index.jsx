@@ -25,20 +25,21 @@ export default class Application extends React.Component {
   textChange = (e) => {
     this.setState({
       text: e.target.value,
-    })
+    });
   }
 
-  encodeText = (e) => {
+
+  encodeText = () => {
     return false;
   }
 
   render() {
     const getContent = interpolated => (
       <div className={cx('input-area__wrapper', {
-        'input-area__wrapper_top': this.state.text.length > 0, 
+        'input-area__wrapper_top': this.state.text.length > 0,
       })}>
-        <div 
-          className='input-area' 
+        <div
+          className='input-area'
           style={Object.assign({}, this.props.style, {transform: `scale(${interpolated.scale})`})}
         >
           <form
