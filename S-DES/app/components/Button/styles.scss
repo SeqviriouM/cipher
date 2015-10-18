@@ -1,0 +1,50 @@
+@import '~styles/variables.scss';
+
+.button {
+  $types: (
+    green: $c-green
+  );
+
+  width: 100%;
+
+  user-select: none;
+
+  border: 0;
+  border-radius: $main-border-radius;
+  outline: none;
+  background-color: $c-blue;
+
+  line-height: 45px;
+
+  &:hover,
+  &:focus {
+    background-color: lighten($c-blue, 10);
+  }
+
+  &:active {
+    background-color: lighten($c-blue, 20);
+  }
+
+  &_type_in-progress {
+    background-color: $c-gray-70 !important;
+
+    &::after {
+      content: '...';
+    }
+  }
+
+  @each $type, $color in $types {
+    &_type_#{$type} {
+      background-color: $color;
+    }
+
+    &_type_#{$type}:hover,
+    &_type_#{$type}:focus {
+      background-color: lighten($color, 10);
+    }
+
+    &_type_#{$type}:active {
+      background-color: lighten($color, 20);
+    }
+  }
+}
