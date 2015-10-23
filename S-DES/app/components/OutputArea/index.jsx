@@ -7,6 +7,7 @@ import './styles.scss';
 export default class Application extends React.Component {
   static propTypes = {
     coding: PropTypes.bool.isRequired,
+    encodeText: PropTypes.string,
   };
 
   constructor(props) {
@@ -30,12 +31,17 @@ export default class Application extends React.Component {
 
 
   render() {
+    const { encodeText } = this.props;
+
     const getContent = interpolated => (
       <div className={cx('output-area__wrapper', {})}>
         <div
           className='output-area'
           style={Object.assign({}, {transform: `translateY(-${interpolated.y}%)`})}
         >
+          <div className='encode-text'>
+              Зашифрованный текст: {encodeText}
+          </div>
         </div>
       </div>
     );

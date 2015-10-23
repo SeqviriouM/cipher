@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
 import {Motion, spring} from 'react-motion';
+import {code, decode} from 'core/sdes';
 import Input from 'components/Input';
 import InfoMessage from 'components/InfoMessage';
 import Button from 'components/Button';
@@ -33,7 +34,7 @@ export default class Application extends React.Component {
   }
 
 
-  encodeText = () => {
+  encodeText = (e) => {
     return false;
   }
 
