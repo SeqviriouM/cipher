@@ -81,7 +81,7 @@ const round = (input, input1, roundKey) => {
   console.log('extendInput: ', extendInput);
   console.log('Round1 key: ', roundKey);
 
-  const xorResult = BitArray.xor(extendInput, roundKey);
+  const xorResult = BitArray.xor(extendInput, roundKey, BitArray.octet([]));
   console.log('XOR result: ', xorResult);
 
   const L = xorResult.slice(0, 4);

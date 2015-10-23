@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import BitArray from 'node-bitarray';
 import InputArea from 'components/InputArea';
 import OutputArea from 'components/OutputArea';
 import {code, decode} from 'core/sdes';
@@ -23,7 +24,8 @@ export default class Application extends React.Component {
   setTextToCrypt = (e) => {
     e.preventDefault();
 
-    const inputText = e.target.text.value.split('');
+    const text = e.target.text.value;
+    const inputText = BitArray.fromBinary(text).toJSON().reverse();
     const outputText = code(inputText);
 
     this.setState({
