@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
 import {Motion, spring} from 'react-motion';
-import {code, decode} from 'core/sdes';
 import Input from 'components/Input';
 import InfoMessage from 'components/InfoMessage';
 import Button from 'components/Button';
@@ -11,6 +10,7 @@ import './styles.scss';
 export default class Application extends React.Component {
   static propTypes = {
     setTextToCrypt: PropTypes.func,
+    hideOutputArea: PropTypes.func,
   };
 
 
@@ -28,23 +28,26 @@ export default class Application extends React.Component {
   }
 
   textChange = (e) => {
+    if (e.target.value.length === 0) {
+      this.props.hideOutputArea();
+    }
     this.setState({
       text: e.target.value,
     });
   }
 
 
-  encodeText = (e) => {
+  encodeText = () => {
     return false;
   }
 
   render() {
     const getContent = interpolated => (
-      <div className={cx('input-area__wrapper', {
-        'input-area__wrapper_top': this.state.text.length > 0,
+      <div className={cx('input-area', {
+        'input-area_top': this.state.text.length > 0,
       })}>
         <div
-          className='input-area'
+          className='input-area__content'
           style={Object.assign({}, {transform: `scale(${interpolated.scale})`})}
         >
           <form

@@ -34,12 +34,14 @@ export default class Application extends React.Component {
     const { encodeText } = this.props;
 
     const getContent = interpolated => (
-      <div className={cx('output-area__wrapper', {})}>
+      <div className={cx('output-area__wrapper', {
+        'output-area__wrapper_show': this.props.coding,
+      })}>
         <div
           className='output-area'
           style={Object.assign({}, {transform: `translateY(-${interpolated.y}%)`})}
         >
-          <div className='encode-text'>
+          <div className='output-area__encode-text'>
               Зашифрованный текст: {encodeText}
           </div>
         </div>

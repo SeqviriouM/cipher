@@ -36,10 +36,16 @@ export default class Application extends React.Component {
     return false;
   }
 
+  hideOutputArea = () => {
+    this.setState({
+      coding: false,
+    });
+  }
+
   render() {
     return (
-      <div>
-        <InputArea setTextToCrypt={this.setTextToCrypt}/>
+      <div className='cipher'>
+        <InputArea setTextToCrypt={this.setTextToCrypt} hideOutputArea={this.hideOutputArea}/>
         <OutputArea coding={this.state.coding} encodeText={this.state.encodeText}/>
       </div>
     );

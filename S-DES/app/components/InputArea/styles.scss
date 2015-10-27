@@ -1,105 +1,119 @@
 @import '~styles/variables.scss';
 
 
-.input-area {
-  width: 100%;
-  max-width: 800px;
-  position: relative;
-  margin: 40px auto 20px;
-  background: rgba(0,0,0,0.7);
-  padding: 20px;
-  border-radius: 10px;
-  overflow: hidden;
-
-  &__wrapper {
+.input-area
+{
     height: 100vh;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    height: 100vh;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    transition-property: justify-content;
-    transition-duration: 1s;
-    transition-timing-function: linear;
 
-    &_top {
-      -webkit-justify-content: flex-start;
-      -ms-flex-pack: flex-start;
-      justify-content: flex-start;
-      transition-property: justify-content;
-      transition-duration: 2s;;
-      transition-timing-function: linear;
+    transition: all 2.3s ease;
+
+    &_top
+    {
+        top: 10px;
+
+        .input-area__content
+        {
+            top: 10px;
+
+            margin-top: 0;
+        }
     }
-  }
-  &__info-message {
-    margin-bottom: 10px;
 
-    font-size: .9em;
-  }
-  &__input {
-    width: 80%;
-    height: 40px;
-    float: left;
-    margin-top: 10px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    box-sizing: border-box;
-    line-height: 40px;
-    background: #fff;
-    border: 1px solid #fff;
-  }
-  &__submit-button {
-    width: 20%;
-    height: 40px;
-    float: left;
-    margin-top: 10px;
-    box-sizing: border-box;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    line-height: 40px;
-    color: #fff;
-  }
-  &__tabs {
-    border-bottom: solid 1px $c-login-window_border;
+    &__content
+    {
+        position: relative;
+        top: calc(50% - 75px);
 
-    font-size: 1.1em;
-    line-height: 60px;
-  }
-  &__window {
-    $width: 500px;
-    $height: 400px;
+        overflow: hidden;
 
-    position: absolute;
-    z-index: 15; // highly then .login-page__rect
-    top: 50%;
-    left: 50%;
+        width: 100%;
+        max-width: 800px;
+        height: 130px;
+        margin: auto;
+        padding: 20px;
 
-    overflow: hidden;
+        transition: top .7s ease;
 
-    width: $width;
-    margin-top: -$height / 2;
-    margin-left: -$width / 2;
+        border-radius: 10px;
+        background: rgba(0,0,0,.7);
+    }
 
-    border: 1px solid $c-login-window_border;
-    border-radius: $main-border-radius;
-    background-color: $c-login-window_bg;
-    box-shadow: 0 0 30px 2px $c-main-shadow;
+    &__info-message
+    {
+        font-size: .9em;
 
-    font-size: 20px;
-  }
-  &__overlay {
-    position: fixed;
-    z-index: 14;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+        margin-bottom: 10px;
+    }
+    &__input
+    {
+        line-height: 40px;
 
-    background: rgba(0, 0, 0, .7);
-  }
+        float: left;
+
+        box-sizing: border-box;
+        width: 80%;
+        height: 40px;
+        margin-top: 10px;
+
+        border: 1px solid #fff;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        background: #fff;
+    }
+    &__submit-button
+    {
+        line-height: 40px;
+
+        float: left;
+
+        box-sizing: border-box;
+        width: 20%;
+        height: 40px;
+        margin-top: 10px;
+
+        color: #fff;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    &__tabs
+    {
+        font-size: 1.1em;
+        line-height: 60px;
+
+        border-bottom: solid 1px $c-login-window_border;
+    }
+    &__window
+    {
+        font-size: 20px;
+
+        position: absolute;
+        z-index: 15; // highly then .login-page__rect
+        top: 50%;
+        left: 50%;
+
+        overflow: hidden;
+
+        width: $width;
+        margin-top: -$height / 2;
+        margin-left: -$width / 2;
+
+        border: 1px solid $c-login-window_border;
+        border-radius: $main-border-radius;
+        background-color: $c-login-window_bg;
+        box-shadow: 0 0 30px 2px $c-main-shadow;
+
+        $width: 500px;
+        $height: 400px;
+    }
+    &__overlay
+    {
+        position: fixed;
+        z-index: 14;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        background: rgba(0, 0, 0, .7);
+    }
 }

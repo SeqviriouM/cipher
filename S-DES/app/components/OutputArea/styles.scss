@@ -1,10 +1,35 @@
 @import '~styles/variables.scss';
 
 
-.output-area {
-  height: 300px;
-  background: rgba(0, 0, 0, 0.7);
-  &__wrapper {
+.output-area
+{
+    height: 300px;
+    padding: 20px;
 
-  }
+    text-align: center;
+
+    background: rgba(0, 0, 0, .7);
+
+    &__encode-text
+    {
+        display: inline-block;
+
+        margin: auto;
+        padding: 20px;
+
+        text-align: center;
+
+        border: 1px dashed white;
+        border-radius: 5px;
+
+        span
+        {
+            font-weight: bold;
+
+            &:first-of-type
+            {
+                font-weight: normal;
+            }
+        }
+    }
 }
