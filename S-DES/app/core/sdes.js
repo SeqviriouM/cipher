@@ -121,7 +121,7 @@ export function code(textForCoding) {
 
 
   const L1 = R0.slice();
-  const R1 = round(L1, L0,  key1);
+  const R1 = round(L1, L0, key1);
 
   console.log('L1: ', L1);
   console.log('R1: ', R1);

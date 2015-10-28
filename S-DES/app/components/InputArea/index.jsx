@@ -11,6 +11,8 @@ export default class Application extends React.Component {
   static propTypes = {
     setTextToCrypt: PropTypes.func,
     hideOutputArea: PropTypes.func,
+    changeMode: PropTypes.func,
+    decodeMode: PropTypes.bool,
   };
 
 
@@ -24,6 +26,7 @@ export default class Application extends React.Component {
       text: '',
       shakeInfo: false,
       encrypt: false,
+      decodeMode: false,
     };
   }
 
@@ -39,6 +42,16 @@ export default class Application extends React.Component {
 
   encodeText = () => {
     return false;
+  }
+
+  changeMode = () => {
+    this.setState({
+      decodeMode: !this.state.decodeMode,
+      info: {
+        type: 'info',
+        text: `Введите текст для ${this.state.decode ? 'дешифрования' : 'шифрования'}`,
+      },
+    });
   }
 
   render() {
@@ -68,6 +81,12 @@ export default class Application extends React.Component {
               placeholder='Text'
               onChange={this.textChange}
             />
+            <div
+              className={cx('input-area__type-button', {
+                'input-area__type-button_decode': this.props.decodeMode,
+              })}
+              onClick={this.props.changeMode}
+            ></div>
             <Button
               className='input-area__submit-button'
               type='submit'

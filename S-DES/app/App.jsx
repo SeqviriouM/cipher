@@ -18,6 +18,7 @@ export default class Application extends React.Component {
     this.state = {
       coding: false,
       codingText: '',
+      decodeMode: false,
     };
   }
 
@@ -26,13 +27,27 @@ export default class Application extends React.Component {
 
     const text = e.target.text.value;
     const inputText = BitArray.fromBinary(text).toJSON().reverse();
-    const outputText = code(inputText);
 
-    this.setState({
-      coding: (e.target.text.value.length !== 0) ? true : false,
-      codingText: e.target.text.value,
-      encodeText: outputText,
-    });
+    debugger;
+
+    if (!this.state.decodeMode) {
+      const outputText = code(inputText);
+
+      this.setState({
+        coding: (e.target.text.value.length !== 0) ? true : false,
+        codingText: e.target.text.value,
+        encodeText: outputText,
+      });
+    } else {
+      const outputText = decode(inputText);
+
+      this.setState({
+        coding: (e.target.text.value.length !== 0) ? true : false,
+        codingText: e.target.text.value,
+        encodeText: outputText,
+      });
+    }
+
     return false;
   }
 
@@ -42,10 +57,16 @@ export default class Application extends React.Component {
     });
   }
 
+  changeMode = () => {
+    this.setState({
+      decodeMode: !this.state.decodeMode,
+    });
+  }
+
   render() {
     return (
       <div className='cipher'>
-        <InputArea setTextToCrypt={this.setTextToCrypt} hideOutputArea={this.hideOutputArea}/>
+        <InputArea setTextToCrypt={this.setTextToCrypt} hideOutputArea={this.hideOutputArea} changeMode={this.changeMode} decodeMode={this.state.decodeMode}/>
         <OutputArea coding={this.state.coding} encodeText={this.state.encodeText}/>
       </div>
     );
