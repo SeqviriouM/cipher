@@ -30,6 +30,24 @@ export default class Application extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.decodeMode) {
+      this.setState({
+        info: {
+          type: 'info',
+          text: 'Введите текст для дешифрования',
+        },
+      });
+    } else {
+      this.setState({
+        info: {
+          type: 'info',
+          text: 'Введите текст для шифрования',
+        },
+      });
+    }
+  }
+
   textChange = (e) => {
     if (e.target.value.length === 0) {
       this.props.hideOutputArea();
@@ -44,15 +62,6 @@ export default class Application extends React.Component {
     return false;
   }
 
-  changeMode = () => {
-    this.setState({
-      decodeMode: !this.state.decodeMode,
-      info: {
-        type: 'info',
-        text: `Введите текст для ${this.state.decode ? 'дешифрования' : 'шифрования'}`,
-      },
-    });
-  }
 
   render() {
     const getContent = interpolated => (

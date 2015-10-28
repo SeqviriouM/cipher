@@ -28,8 +28,6 @@ export default class Application extends React.Component {
     const text = e.target.text.value;
     const inputText = BitArray.fromBinary(text).toJSON().reverse();
 
-    debugger;
-
     if (!this.state.decodeMode) {
       const outputText = code(inputText);
 
