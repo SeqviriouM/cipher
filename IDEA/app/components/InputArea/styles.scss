@@ -1,0 +1,175 @@
+@import '~styles/variables.scss';
+
+
+.input-area
+{
+    height: 100vh;
+
+    transition: all 2.3s ease;
+
+    &_top
+    {
+        top: 10px;
+
+        .input-area__content
+        {
+            top: 10px;
+
+            margin-top: 0;
+        }
+    }
+
+    &__content
+    {
+        position: relative;
+        top: calc(50% - 75px);
+
+        overflow: hidden;
+
+        width: 100%;
+        max-width: 800px;
+        height: 130px;
+        margin: auto;
+        padding: 20px;
+
+        transition: top .7s ease;
+
+        border-radius: 10px;
+        background: rgba(0,0,0,.7);
+    }
+
+    &__info-message
+    {
+        font-size: .9em;
+
+        margin-bottom: 10px;
+    }
+    &__input
+    {
+        line-height: 40px;
+
+        float: left;
+
+        box-sizing: border-box;
+        width: 70%;
+        height: 40px;
+        margin-top: 10px;
+
+        border: 1px solid #fff;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        background: #fff;
+    }
+    &__type-button {
+        width: 10%;
+        height: 40px;
+        background-color: #00B0E0;
+        float: left;
+        margin-top: 10px;
+        border-right: 1px solid #000C13;
+
+        position: relative;
+
+        &::after,
+        &::before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            display: block;
+
+            content: '';
+            transition: background .3s;
+            transition: .5s ease-in-out;
+
+            background: white;
+
+            translate: all 0.7s ease;
+        }
+
+        &::before {
+            width: 2px;
+            height: 13px;
+            margin-top: -3px;
+            margin-left: -1px;
+
+            transform: rotateZ(45deg);
+        }
+
+        &::after {
+            width: 11px;
+            height: 2px;
+            margin-top: -6px;
+            margin-left: -6px;
+
+            transform: rotateZ(45deg);
+        }
+
+        &_decode {
+            &::before {
+                transform: rotateZ(-45deg);
+            }
+
+             &::after {
+                transform: rotateZ(-45deg);
+             }
+        }
+    }
+    &__submit-button
+    {
+        line-height: 40px;
+
+        float: left;
+
+        box-sizing: border-box;
+        width: 20%;
+        height: 40px;
+        margin-top: 10px;
+
+        color: #fff;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    &__tabs
+    {
+        font-size: 1.1em;
+        line-height: 60px;
+
+        border-bottom: solid 1px $c-login-window_border;
+    }
+    &__window
+    {
+        $width: 500px;
+        $height: 400px;
+
+        font-size: 20px;
+
+        position: absolute;
+        z-index: 15; // highly then .login-page__rect
+        top: 50%;
+        left: 50%;
+
+        overflow: hidden;
+
+        width: $width;
+        margin-top: -$height / 2;
+        margin-left: -$width / 2;
+
+        border: 1px solid $c-login-window_border;
+        border-radius: $main-border-radius;
+        background-color: $c-login-window_bg;
+        box-shadow: 0 0 30px 2px $c-main-shadow;
+
+    }
+    &__overlay
+    {
+        position: fixed;
+        z-index: 14;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        background: rgba(0, 0, 0, .7);
+    }
+}
