@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import BitArray from 'node-bitarray';
 import InputArea from 'components/InputArea';
 import OutputArea from 'components/OutputArea';
-import {code, decode} from 'core/sdes';
+import {code, decode} from 'core/idea';
 import 'styles/main.scss';
 
 
