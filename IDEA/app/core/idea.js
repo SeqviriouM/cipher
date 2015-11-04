@@ -58,7 +58,7 @@ const addByModule = (val1, val2) => {
 
 function generateKeys() {
   const roundKeys = {};
-  const rounds = 8;
+  const rounds = 9;
 
   for (let roundIndex = 0; roundIndex < rounds; roundIndex++) {
     const roundKey = shift(key, (52 * roundIndex));
@@ -122,8 +122,20 @@ function round(block, roundKeys, roundIndex) {
   return [].concat(...roundBlocks);
 }
 
-function finalRound(block, roundKeys) {
-  return block;
+function finalRound(block, roundKeys, roundIndex) {
+  console.log(block);
+  const roundBlocks = arrDivide(block, 16);
+
+  console.log(`----- Final Round -----`);
+  console.log(`1: ${roundBlocks[0]}`);
+  console.log(`2: ${roundKeys[roundIndex][0]}`);
+
+  roundBlocks[0] = mullByModule(roundBlocks[0], roundKeys[roundIndex][0]);
+  roundBlocks[3] = mullByModule(roundBlocks[3], roundKeys[roundIndex][3]);
+  roundBlocks[1] = addByModule(roundBlocks[1], roundKeys[roundIndex][1]);
+  roundBlocks[2] = addByModule(roundBlocks[2], roundKeys[roundIndex][2]);
+
+  return [].concat(...roundBlocks);
 }
 
 export function crypt(text) {
@@ -136,7 +148,11 @@ export function crypt(text) {
     console.log(`Block ${i}: ${block}`);
   }
 
-  console.log(block);
+  const cryptedText = finalRound(block, roundKeys, 8);
+
+  console.log(cryptedText);
+
+  return cryptedText;
 }
 
 crypt('1');
