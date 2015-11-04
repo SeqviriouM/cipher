@@ -69,41 +69,74 @@ function generateKeys() {
 
 
 function round(block, roundKeys, roundIndex) {
+
+  console.log(block);
   const roundBlocks = arrDivide(block, 16);
 
+  console.log(`----- Round ${roundIndex} -----`);
   console.log(`1: ${roundBlocks[0]}`);
   console.log(`2: ${roundKeys[roundIndex][0]}`);
 
+  console.log(`----- 1 -----`);
   roundBlocks[0] = mullByModule(roundBlocks[0], roundKeys[roundIndex][0]);
   roundBlocks[3] = mullByModule(roundBlocks[3], roundKeys[roundIndex][3]);
   roundBlocks[1] = addByModule(roundBlocks[1], roundKeys[roundIndex][1]);
   roundBlocks[2] = addByModule(roundBlocks[2], roundKeys[roundIndex][2]);
 
+  console.log(`----- 2 -----`);
+
   let tmpRoundBlock1 = BitArray.xor(roundBlocks[0], roundBlocks[2], BitArray.factory(0, 16));
   let tmpRoundBlock2 = BitArray.xor(roundBlocks[1], roundBlocks[3], BitArray.factory(0, 16));
+
+  console.log(`----- 3 -----`);
 
   tmpRoundBlock1 = mullByModule(tmpRoundBlock1, roundKeys[roundIndex][4]);
   tmpRoundBlock2 = addByModule(tmpRoundBlock1, tmpRoundBlock2);
 
+  console.log(`----- 4 -----`);
+
   tmpRoundBlock2 = mullByModule(tmpRoundBlock2, roundKeys[roundIndex][5]);
   tmpRoundBlock1 = addByModule(tmpRoundBlock1, tmpRoundBlock2);
 
+  console.log(`----- 5 -----`);
+
   roundBlocks[0] = mullByModule(roundBlocks[0], tmpRoundBlock2);
+
+  console.log(`----- 5.1 -----`);
+
   roundBlocks[1] = mullByModule(roundBlocks[1], tmpRoundBlock1);
+
+  console.log(`----- 5.2 -----`);
+
   roundBlocks[2] = addByModule(roundBlocks[2], tmpRoundBlock2);
+
+  console.log(`----- 5.3 -----`);
+
   roundBlocks[3] = addByModule(roundBlocks[3], tmpRoundBlock1);
+
+  console.log(`----- 5.4 -----`);
+
 
   [roundBlocks[1], roundBlocks[2]] = [roundBlocks[2], roundBlocks[1]];
 
-  return roundBlocks;
+  return [].concat(...roundBlocks);
 }
 
+function finalRound(block, roundKeys) {
+  return block;
+}
 
 export function crypt(text) {
   const roundKeys = generateKeys();
+  let block = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
-  const block = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
-  round(block, roundKeys, 0);
+  for (let i = 0; i < 8; i++) {
+    block = round(block, roundKeys, i);
+
+    console.log(`Block ${i}: ${block}`);
+  }
+
+  console.log(block);
 }
 
 crypt('1');
