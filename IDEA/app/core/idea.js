@@ -1,7 +1,7 @@
 import BitArray from 'node-bitarray';
 import bigInt from 'big-integer';
 
-const MULL_CONST = Math.pow(2, 16) + 1;
+const MULTIPLY_CONST = Math.pow(2, 16) + 1;
 const ADD_CONST = Math.pow(2, 16);
 
 // const key = BitArray.fromBinary('1111010110').toJSON().reverse();
@@ -22,11 +22,11 @@ const binExtend = (input, inputSize) => input.unshift(...Array.from(new Array(in
 
 const mod = (value, base) => (((value % base) + base) % base);
 
-const mullByModule = (val1, val2) => {
+const multiplyByModule = (val1, val2) => {
   const val1Number = BitArray.toNumber(val1.slice().reverse()) || ADD_CONST;
   const val2Number = BitArray.toNumber(val2.slice().reverse()) || ADD_CONST;
 
-  let result = ((bigInt(val1Number).multiply(bigInt(val2Number))).mod(bigInt(MULL_CONST)));
+  let result = ((bigInt(val1Number).multiply(bigInt(val2Number))).mod(bigInt(MULTIPLY_CONST)));
 
   if (result.toJSNumber() === ADD_CONST) {
     result = bigInt(0);
@@ -65,12 +65,12 @@ const xgcd = (a, b) => {
 
 const modInv = (val, size = 16) => {
   const valNumber = val.length ? BitArray.toNumber(val.slice().reverse()) : val;
-  const [ g, x, y ] = xgcd(valNumber, MULL_CONST);
+  const [ g, x, y ] = xgcd(valNumber, MULTIPLY_CONST);
   if (g !== 1) {
     throw 'modular inverse does not exist';
   }
 
-  const result = mod(x, MULL_CONST);
+  const result = mod(x, MULTIPLY_CONST);
   const resultBin = BitArray.factory(result).toJSON();
   binExtend(resultBin, size);
 
@@ -143,8 +143,8 @@ function round(block, roundKeys, roundIndex) {
 
   console.log(`----- Round ${roundIndex} -----`);
 
-  roundBlocks[0] = mullByModule(roundBlocks[0], roundKeys[roundIndex][0]);
-  roundBlocks[3] = mullByModule(roundBlocks[3], roundKeys[roundIndex][3]);
+  roundBlocks[0] = multiplyByModule(roundBlocks[0], roundKeys[roundIndex][0]);
+  roundBlocks[3] = multiplyByModule(roundBlocks[3], roundKeys[roundIndex][3]);
 
   roundBlocks[1] = addByModule(roundBlocks[1], roundKeys[roundIndex][1]);
   roundBlocks[2] = addByModule(roundBlocks[2], roundKeys[roundIndex][2]);
@@ -152,10 +152,10 @@ function round(block, roundKeys, roundIndex) {
   let tmpRoundBlock1 = BitArray.xor(roundBlocks[0], roundBlocks[2], BitArray.factory(0, 16));
   let tmpRoundBlock2 = BitArray.xor(roundBlocks[1], roundBlocks[3], BitArray.factory(0, 16));
 
-  tmpRoundBlock1 = mullByModule(tmpRoundBlock1, roundKeys[roundIndex][4]);
+  tmpRoundBlock1 = multiplyByModule(tmpRoundBlock1, roundKeys[roundIndex][4]);
   tmpRoundBlock2 = addByModule(tmpRoundBlock1, tmpRoundBlock2);
 
-  tmpRoundBlock2 = mullByModule(tmpRoundBlock2, roundKeys[roundIndex][5]);
+  tmpRoundBlock2 = multiplyByModule(tmpRoundBlock2, roundKeys[roundIndex][5]);
   tmpRoundBlock1 = addByModule(tmpRoundBlock1, tmpRoundBlock2);
 
   roundBlocks[0] = BitArray.xor(roundBlocks[0], tmpRoundBlock2, BitArray.factory(0, 16));
@@ -175,8 +175,8 @@ function finalRound(block, roundKeys, roundIndex) {
 
   [roundBlocks[1], roundBlocks[2]] = [roundBlocks[2], roundBlocks[1]];
 
-  roundBlocks[0] = mullByModule(roundBlocks[0], roundKeys[roundIndex][0]);
-  roundBlocks[3] = mullByModule(roundBlocks[3], roundKeys[roundIndex][3]);
+  roundBlocks[0] = multiplyByModule(roundBlocks[0], roundKeys[roundIndex][0]);
+  roundBlocks[3] = multiplyByModule(roundBlocks[3], roundKeys[roundIndex][3]);
   roundBlocks[1] = addByModule(roundBlocks[1], roundKeys[roundIndex][1]);
   roundBlocks[2] = addByModule(roundBlocks[2], roundKeys[roundIndex][2]);
 
