@@ -20,6 +20,8 @@ const arrDivide = (input, blockSize) => Array.from(new Array(input.length / bloc
 
 const binExtend = (input, inputSize) => input.unshift(...Array.from(new Array(inputSize - input.length), () => 0));
 
+const mod = (value, base) => (((value % base) + base) % base);
+
 const mullByModule = (val1, val2) => {
   const val1Number = BitArray.toNumber(val1.slice().reverse()) || ADD_CONST;
   const val2Number = BitArray.toNumber(val2.slice().reverse()) || ADD_CONST;
@@ -56,23 +58,23 @@ const xgcd = (a, b) => {
     return [b, 0, 1];
   }
 
-  const [ g, y, x ] = xgcd(b % a, a);
+  const [ g, y, x ] = xgcd(mod(b, a), a);
 
   return [g, x - Math.floor(b / a) * y, y];
  };
 
 const modInv = (val, size = 16) => {
-  const valNumber = BitArray.toNumber(val.reverse());
+  const valNumber = val.length ? BitArray.toNumber(val.slice().reverse()) : val;
   const [ g, x, y ] = xgcd(valNumber, MULL_CONST);
   if (g !== 1) {
     throw 'modular inverse does not exist';
   }
 
-  const result = x % MULL_CONST;
+  const result = mod(x, MULL_CONST);
   const resultBin = BitArray.factory(result).toJSON();
   binExtend(resultBin, size);
 
-  return resultBin;
+  return val.length ? resultBin : result;
 };
 
 const addInv = (val, size = 16) => {
@@ -80,7 +82,7 @@ const addInv = (val, size = 16) => {
   const resultBin = BitArray.factory(result).toJSON();
   binExtend(resultBin, size);
 
-  return resultBin;
+  return val.length ? resultBin : result;
 };
 
 function generateKeys(decode = false) {
@@ -111,14 +113,14 @@ function generateKeys(decode = false) {
       roundKeys[7][5],
     ];
 
-    for (let i = 8; i > 1; i--) {
-      decodeRoundKeys[9 - i] = [
-        modInv(roundKeys[i][0]),
-        addInv(roundKeys[i][2]),
-        addInv(roundKeys[i][1]),
-        modInv(roundKeys[i][3]),
-        roundKeys[i - 1][4],
-        roundKeys[i - 1][5],
+    for (let i = 1; i < 8; i++) {
+      decodeRoundKeys[i] = [
+        modInv(roundKeys[8 - i][0]),
+        addInv(roundKeys[8 - i][2]),
+        addInv(roundKeys[8 - i][1]),
+        modInv(roundKeys[8 - i][3]),
+        roundKeys[7 - i][4],
+        roundKeys[7 - i][5],
       ];
     }
 
@@ -229,4 +231,4 @@ console.log(text === decryptedText);
 
 // console.log(modInv(0x363f));
 
-// 47551
+// 0x363f -- 47551
