@@ -7,9 +7,7 @@ const app = express();
 const server = new http.Server(app);
 const port = process.env.PORT || 3000;
 const isDev = process.env.NODE_ENV === 'development';
-const env = process.env.NODE_ENV;
 const isDebug = process.env.DEBUG;
-const isMongoConnect = process.env.MONGO_CONNECT;
 
 if (isDev && isDebug && process.env.DEBUG.indexOf('shrimp:front') === 0) {
   const webpack = require('webpack');
