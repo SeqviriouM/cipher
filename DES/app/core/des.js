@@ -1,11 +1,10 @@
 import BitArray from 'node-bitarray';
 
-
-// const key = BitArray.fromBinary('1111010110').toJSON().reverse();
-
 // const key = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
 const key = [0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0];
+
+const initializationVector = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
 const extendTransposition = [32, 1, 2, 3, 4, 5,
   4, 5, 6, 7, 8, 9,
@@ -110,10 +109,10 @@ const size = (input, scheme) => scheme.map((item) => input[item - 1]);
 
 const binExtend = (input, inputSize) => input.unshift(...Array.from(new Array(inputSize - input.length), () => 0));
 
+const arrDivide = (input, blockSize) => Array.from(new Array(input.length / blockSize), (item, index) => input.slice(index * blockSize, index * blockSize + blockSize));
+
 const getValueFromBlock = (input, block) => {
   const copiedInput = input.slice();
-
-  console.log(input);
 
   const valY = new BitArray(copiedInput.splice(1, 4).reverse()).toNumber();
   const valX = new BitArray(copiedInput.reverse()).toNumber();
@@ -154,11 +153,7 @@ const generateKeys = (localKey) => {
 const round = (input, input1, roundKey) => {
   const extendInput = size(input, extendTransposition);
 
-  // console.log('extendInput: ', extendInput);
-  // console.log('Round1 key: ', roundKey);
-
   const xorResult = BitArray.xor(extendInput, roundKey, BitArray.factory(0, 32));
-  // console.log('XOR result: ', xorResult);
 
   const B = [];
   const blockValues = [];
@@ -168,34 +163,19 @@ const round = (input, input1, roundKey) => {
     blockValues.push(getValueFromBlock(B[i], s[i]));
   }
 
-  // const s1Val = getValueFromBlock(L, s1);
-  // const s2Val = getValueFromBlock(R, s2);
-
-  // console.log('s1Val: ', s1Val);
-  // console.log('s2Val: ', s2Val);
-
   const blockVal = [].concat(...blockValues);
   const valueWithTransposition = permutation(blockVal, transposition);
 
-  // console.log('valueWithTransposition: ', valueWithTransposition);
-
-  // console.log('Input: ', input);
-
   const output = BitArray.xor(valueWithTransposition, input1, BitArray.factory(0, 32));
-
-  // console.log('Output: ', output);
 
   return output;
 };
 
 
-export function code(textForCoding) {
+export function code(textForCoding, keys) {
   console.log('--------------CODING--------------');
 
-  const keys = generateKeys(key);
   const rounds = 16;
-
-  console.log('Keys: ' + keys.length);
 
   const textWithPermutation = permutation(textForCoding, nach);
 
@@ -205,6 +185,10 @@ export function code(textForCoding) {
   for (let i = 0; i < rounds; i++) {
     const L1 = R0.slice();
     const R1 = round(R0, L0, keys[i]);
+
+    console.log(`------------Round ${i}------------`);
+    console.log(`L1: ${L1}`);
+    console.log(`R1: ${R1}`);
 
     [ L0, R0 ] = [ L1, R1 ];
   }
@@ -220,11 +204,17 @@ export function code(textForCoding) {
   console.log('Text for coding: ' + textForCoding);
   console.log('Encrypted text: ' + ciphertext);
 
+  return ciphertext;
+}
 
-  const textWithPermutation_1 = permutation(ciphertext, nach);
 
-  L0 = textWithPermutation_1.slice(0, 32);
-  R0 = textWithPermutation_1.slice(32);
+export function decode(textForDecoding, keys) {
+  console.log('--------------CODING--------------');
+
+  const textWithPermutation = permutation(textForDecoding, nach);
+
+  let L0 = textWithPermutation.slice(0, 32);
+  let R0 = textWithPermutation.slice(32);
 
   for (let i = 15; i > -1; i--) {
     const R1 = L0.slice();
@@ -235,69 +225,96 @@ export function code(textForCoding) {
 
   // [ L0, R0 ] = [ R0, L0 ];
 
-  const LR_1 = L0.concat(R0);
+  const LR = L0.concat(R0);
 
-  console.log('LR: ' + LR_1);
+  console.log('LR: ' + LR);
 
-  const decodetext = permutation(LR_1, con);
+  const decodedtext = permutation(LR, con);
 
-  console.log('Decoded text: ' + decodetext);
-  console.log('Default text: ' + textForCoding);
-  // const textWithPermutation = permutation(textForCoding, nach);
-
-  // const L0 = textWithPermutation.slice(0, 4);
-  // const R0 = textWithPermutation.slice(4);
-
-  // console.log('L0: ', L0);
-  // console.log('R0: ', R0);
-
-
-  // const L1 = R0.slice();
-  // const R1 = round(L1, L0, key1);
-
-  // console.log('L1: ', L1);
-  // console.log('R1: ', R1);
-
-
-  // const R2 = R1.slice();
-  // const L2 = round(R2, L1, key2);
-
-  // console.log('L2: ', L2);
-  // console.log('R2: ', R2);
-
-  // const LR2 = L2.concat(R2);
-  // const ciphertext = permutation(LR2, con);
-
-  // console.log('Ciphertext: ', ciphertext);
-
-  // return ciphertext;
-}
-
-
-export function decode(textForDecoding) {
-  console.log('-------------DECODING-------------');
-
-  const textWithPermutation = permutation(textForDecoding, nach);
-
-  const L2 = textWithPermutation.slice(0, 4);
-  const R2 = textWithPermutation.slice(4);
-
-  const R1 = round(R2, L2, key2);
-  const L1 = R2.slice();
-
-  const L0 = round(R1, L1, key1);
-  const R0 = R1.slice();
-
-  const LR0 = L0.concat(R0);
-  const decodedtext = permutation(LR0, con);
-
-  console.log('Decoded text: ', decodedtext);
+  console.log('Text for decoding: ' + textForDecoding);
+  console.log('Decoded text: ' + decodedtext);
 
   return decodedtext;
 }
 
+export function encrypt(input, mode) {
+  const keys = generateKeys(key);
+  const outputBlocks = [];
 
+  const inputBlocks = arrDivide(input, 64);
+
+  switch (mode) {
+  case 'ECB':
+    inputBlocks.forEach(item => {
+      outputBlocks.push(code(item, keys));
+    });
+    break;
+
+  case 'OFB':
+    let inputBlockForCoding = initializationVector.slice();
+    inputBlocks.forEach(item => {
+      const blockCoding = code(inputBlockForCoding, keys);
+      inputBlockForCoding = blockCoding.slice();
+
+      const blockResult = BitArray.xor(blockCoding, item, BitArray.factory(0, 64));
+
+      outputBlocks.push(blockResult);
+    });
+    break;
+
+  default:
+    break;
+  }
+
+  const output = [].concat(...outputBlocks);
+
+  console.log('Output: ' + output);
+
+  return output;
+}
+
+export function decrypt(input, mode) {
+  const keys = generateKeys(key);
+  const outputBlocks = [];
+
+  const inputBlocks = arrDivide(input, 64);
+
+  switch (mode) {
+  case 'ECB':
+    inputBlocks.forEach(item => {
+      outputBlocks.push(decode(item, keys));
+    });
+    break;
+
+  case 'OFB':
+    let inputBlockForCoding = initializationVector.slice();
+    inputBlocks.forEach(item => {
+      const blockCoding = code(inputBlockForCoding, keys);
+      inputBlockForCoding = blockCoding.slice();
+
+      const blockResult = BitArray.xor(blockCoding, item, BitArray.factory(0, 64));
+
+      outputBlocks.push(blockResult);
+    });
+    break;
+
+  default:
+    break;
+  }
+
+  const output = [].concat(...outputBlocks);
+
+  console.log('Output: ' + output);
+
+  return output;
+}
 // const text = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
 const text = [1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1];
-code(text);
+
+const a = encrypt(text, 'OFB');
+const b = decrypt(a, 'OFB');
+
+console.log('Text: ' + text);
+console.log('A: ' + a);
+console.log('B: ' + b);
