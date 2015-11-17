@@ -2,7 +2,7 @@ import BitArray from 'node-bitarray';
 
 // const key = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
-const key = [0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0];
+// const key = [0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0];
 
 const initializationVector = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
@@ -237,7 +237,7 @@ export function decode(textForDecoding, keys) {
   return decodedtext;
 }
 
-export function encrypt(input, mode) {
+export function encrypt(input, key, mode = 'ECB') {
   const keys = generateKeys(key);
   const outputBlocks = [];
 
@@ -273,7 +273,7 @@ export function encrypt(input, mode) {
   return output;
 }
 
-export function decrypt(input, mode) {
+export function decrypt(input, key, mode = 'ECB') {
   const keys = generateKeys(key);
   const outputBlocks = [];
 
@@ -308,13 +308,19 @@ export function decrypt(input, mode) {
 
   return output;
 }
+
+export function generateText(arrSize) {
+  return Array.from(new Array(arrSize), () => Math.floor(2 * Math.random())).join('');
+}
+
 // const text = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
-const text = [1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1];
+// const text = [1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1];
 
-const a = encrypt(text, 'OFB');
-const b = decrypt(a, 'OFB');
+// const a = encrypt(text, 'OFB');
+// const b = decrypt(a, 'OFB');
 
-console.log('Text: ' + text);
-console.log('A: ' + a);
-console.log('B: ' + b);
+
+// console.log('Text: ' + text);
+// console.log('A: ' + a);
+// console.log('B: ' + b);

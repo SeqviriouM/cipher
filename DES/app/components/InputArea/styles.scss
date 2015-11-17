@@ -19,16 +19,25 @@
         }
     }
 
+    &__form
+    {
+        &:hover
+        {
+            .input-area__input
+            {
+                width: 80%;
+            }
+        }
+    }
+
     &__content
     {
         position: relative;
-        top: calc(50% - 75px);
-
-        overflow: hidden;
+        top: calc(50% - 110px);
 
         width: 100%;
         max-width: 800px;
-        height: 130px;
+        height: 220px;
         margin: auto;
         padding: 20px;
 
@@ -51,27 +60,33 @@
         float: left;
 
         box-sizing: border-box;
-        width: 70%;
+        width: 90%;
         height: 40px;
         margin-top: 10px;
+
+        transition: width .7s ease;
 
         border: 1px solid #fff;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         background: #fff;
     }
-    &__type-button {
-        width: 10%;
-        height: 40px;
-        background-color: #00B0E0;
-        float: left;
-        margin-top: 10px;
-        border-right: 1px solid #000C13;
-
+    &__type-button
+    {
         position: relative;
 
+        float: left;
+
+        width: 10%;
+        height: 40px;
+        margin-top: 10px;
+
+        border-right: 1px solid #000c13;
+        background-color: #00b0e0;
+
         &::after,
-        &::before {
+        &::before
+        {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -84,10 +99,11 @@
 
             background: white;
 
-            translate: all 0.7s ease;
+            translate: all .7s ease;
         }
 
-        &::before {
+        &::before
+        {
             width: 2px;
             height: 13px;
             margin-top: -3px;
@@ -96,7 +112,8 @@
             transform: rotateZ(45deg);
         }
 
-        &::after {
+        &::after
+        {
             width: 11px;
             height: 2px;
             margin-top: -6px;
@@ -105,17 +122,30 @@
             transform: rotateZ(45deg);
         }
 
-        &_decode {
-            &::before {
+        &_decode
+        {
+            &::before
+            {
                 transform: rotateZ(-45deg);
             }
 
-             &::after {
+            &::after
+            {
                 transform: rotateZ(-45deg);
-             }
+            }
         }
     }
-    &__submit-button
+    &__row
+    {
+        position: relative;
+
+        overflow: hidden;
+        &_submit
+        {
+            text-align: center;
+        }
+    }
+    &__button
     {
         line-height: 40px;
 
@@ -126,9 +156,101 @@
         height: 40px;
         margin-top: 10px;
 
+        cursor: pointer;
+        text-align: center;
+
         color: #fff;
-        border-top-left-radius: 0;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: #00b0e0;
+
+        &:hover
+        {
+            background: #14cdff;
+        }
+
+        &_generate
+        {
+            font-size: 30px;
+
+            position: absolute;
+            right: 0;
+
+            width: 10%;
+
+            &:hover
+            {
+                .symbol
+                {
+                    -webkit-transform: rotate(90deg);
+                        -ms-transform: rotate(90deg);
+                            transform: rotate(90deg);
+                }
+            }
+
+            .symbol
+            {
+                transition: all .5s ease;
+            }
+        }
+    }
+    &__check-mode
+    {
+        font-size: 30px;
+
+        width: 10%;
+
+        border-radius: 0;
+        border-right: 1px solid #000c13;
+
+        &_active
+        {
+            color: #098207;
+
+            .symbol
+            {
+                -webkit-transform: rotate(120deg);
+                    -ms-transform: rotate(120deg);
+                        transform: rotate(120deg);
+            }
+        }
+
+        .symbol
+        {
+            transition: all .7s ease;
+        }
+    }
+    &__submit-button
+    {
+        line-height: 40px;
+
+        box-sizing: border-box;
+        width: 20%;
+        height: 40px;
+        margin-top: 10px;
+
         border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+
+        color: #fff;
+
+        &_active
+        {
+            background: #14cdff;
+        }
+    }
+    &__select-area {
+        width: 20%;
+        display: inline-block;
+        margin-top: 10px;
+        vertical-align: top;
+
+        .Select-control {
+            height: 40px;
+
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
     }
     &__tabs
     {
@@ -139,15 +261,15 @@
     }
     &__window
     {
-        $width: 500px;
-        $height: 400px;
-
         font-size: 20px;
 
         position: absolute;
         z-index: 15; // highly then .login-page__rect
         top: 50%;
         left: 50%;
+
+        $width: 500px;
+        $height: 400px;
 
         overflow: hidden;
 
@@ -159,7 +281,6 @@
         border-radius: $main-border-radius;
         background-color: $c-login-window_bg;
         box-shadow: 0 0 30px 2px $c-main-shadow;
-
     }
     &__overlay
     {
@@ -173,3 +294,4 @@
         background: rgba(0, 0, 0, .7);
     }
 }
+

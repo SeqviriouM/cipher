@@ -7,7 +7,9 @@ import './styles.scss';
 export default class Application extends React.Component {
   static propTypes = {
     coding: PropTypes.bool.isRequired,
-    encodeText: PropTypes.string,
+    encodedText: PropTypes.string,
+    decodedText: PropTypes.string,
+    checkMode: PropTypes.bool,
   };
 
   constructor(props) {
@@ -31,7 +33,21 @@ export default class Application extends React.Component {
 
 
   render() {
-    const { encodeText } = this.props;
+    const { decodedText, encodedText } = this.props;
+
+    const getOutputData = () => {
+      return (this.props.checkMode && this.props.decodedText) ?
+        (
+          <div>
+            <p>Зашифрованный текст: {encodedText}</p>
+            <p>Расшифрованный текст: {decodedText}</p>
+          </div>
+        ) : (
+          <div>
+            <p>Зашифрованный текст: {encodedText}</p>
+          </div>
+        );
+    };
 
     const getContent = interpolated => (
       <div className={cx('output-area__wrapper', {
@@ -41,8 +57,10 @@ export default class Application extends React.Component {
           className='output-area'
           style={Object.assign({}, {transform: `translateY(-${interpolated.y}%)`})}
         >
-          <div className='output-area__encode-text'>
-              Зашифрованный текст: {encodeText}
+          <div className={cx('output-area__encode-text', {
+            'output-area__encode-text_check-mode': (this.props.checkMode && this.props.decodedText),
+          })}>
+            { getOutputData() }
           </div>
         </div>
       </div>
