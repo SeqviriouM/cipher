@@ -22,13 +22,13 @@
     &__content
     {
         position: relative;
-        top: calc(50% - 75px);
+        top: calc(50% - 110px);
 
         overflow: hidden;
 
         width: 100%;
         max-width: 800px;
-        height: 130px;
+        height: 220px;
         margin: auto;
         padding: 20px;
 
@@ -115,7 +115,13 @@
              }
         }
     }
-    &__submit-button
+    &__row {
+        overflow: hidden;
+        &_submit {
+            text-align: center;
+        }
+    }
+    &__button
     {
         line-height: 40px;
 
@@ -129,6 +135,27 @@
         color: #fff;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+    }
+    &__submit-button
+    {
+        line-height: 40px;
+
+        box-sizing: border-box;
+        width: 20%;
+        height: 40px;
+        margin-top: 10px;
+
+        color: #fff;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+        &_left {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: 1px solid black;
+        }
     }
     &__tabs
     {

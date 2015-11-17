@@ -4,17 +4,9 @@ import bigInt from 'big-integer';
 const MULTIPLY_CONST = Math.pow(2, 16) + 1;
 const ADD_CONST = Math.pow(2, 16);
 
-// const key = BitArray.fromBinary('1111010110').toJSON().reverse();
-
-
-// const permutation = (input, scheme) => input.map((item, index, arr) => arr[scheme[index] - 1]);
-
 const shift = (input, shiftValue) => input.map((item, index, arr) => arr[(index + (shiftValue % arr.length) + arr.length) % arr.length]);
 
-// const size = (input, scheme) => scheme.map((item) => input[item - 1]);
-
-// const key = Array.from(new Array(128), () => Math.floor(2 * Math.random()));
-const key = '00000000000000010000000000000010000000000000001100000000000001000000000000000101000000000000011000000000000001110000000000001000'.split('').map(el => +el);
+// const key = '00000000000000010000000000000010000000000000001100000000000001000000000000000101000000000000011000000000000001110000000000001000'.split('').map(el => +el);
 
 const arrDivide = (input, blockSize) => Array.from(new Array(input.length / blockSize), (item, index) => input.slice(index * blockSize, index * blockSize + blockSize));
 
@@ -85,7 +77,7 @@ const addInv = (val, size = 16) => {
   return val.length ? resultBin : result;
 };
 
-function generateKeys(decode = false) {
+function generateKeys(key, decode = false) {
   let roundKeys = [];
   const roundKeysArr = [];
 
@@ -99,9 +91,7 @@ function generateKeys(decode = false) {
     roundKeys[roundIndex] = arrDivide(roundPart, 16);
   }
 
-  if (!decode) {
-    // return roundKeys;
-  } else {
+  if (decode) {
     const decodeRoundKeys = [];
 
     decodeRoundKeys[0] = [
@@ -183,8 +173,8 @@ function finalRound(block, roundKeys, roundIndex) {
   return [].concat(...roundBlocks);
 }
 
-export function crypt(text) {
-  const roundKeys = generateKeys();
+export function crypt(text, key) {
+  const roundKeys = generateKeys(key);
   // let block = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
   let block = text;
 
@@ -199,8 +189,8 @@ export function crypt(text) {
   return cryptedText;
 }
 
-export function decrypt(text) {
-  const roundKeys = generateKeys(true);
+export function decrypt(text, key) {
+  const roundKeys = generateKeys(key, true);
   // let block = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
   let block = text;
 
@@ -215,19 +205,23 @@ export function decrypt(text) {
   return decryptedText;
 }
 
+export function generateText(size) {
+  return Array.from(new Array(size), () => Math.floor(2 * Math.random())).join('');
+}
+
 // const text = Array.from(new Array(64), () => Math.floor(2 * Math.random()));
 
 const text = '0000000000000000000000000000000100000000000000100000000000000011'.split('').map(el => +el);
 
 console.log('Default text: ' + text);
 
-const encryptedText = crypt(text);
-const decryptedText = decrypt(encryptedText);
+// const encryptedText = crypt(text);
+// const decryptedText = decrypt(encryptedText);
 
-console.log('Encrypted text: ' + encryptedText);
-console.log('Decrypted text: ' + decryptedText);
-console.log('Default text: ' + text);
-console.log(text === decryptedText);
+// console.log('Encrypted text: ' + encryptedText);
+// console.log('Decrypted text: ' + decryptedText);
+// console.log('Default text: ' + text);
+// console.log(text === decryptedText);
 
 // console.log(modInv(0x363f));
 
