@@ -35,6 +35,20 @@ export default class Application extends React.Component {
   render() {
     const { decodedText, encodedText } = this.props;
 
+    const getOutputData = () => {
+      return (this.props.checkMode && this.props.decodedText) ?
+        (
+          <div>
+            <p>Зашифрованный текст: {encodedText}</p>
+            <p>Расшифрованный текст: {decodedText}</p>
+          </div>
+        ) : (
+          <div>
+            <p>Зашифрованный текст: {encodedText}</p>
+          </div>
+        );
+    };
+
     const getContent = interpolated => (
       <div className={cx('output-area__wrapper', {
         'output-area__wrapper_show': this.props.coding,
@@ -43,11 +57,10 @@ export default class Application extends React.Component {
           className='output-area'
           style={Object.assign({}, {transform: `translateY(-${interpolated.y}%)`})}
         >
-          <div className='output-area__encode-text'>
-            {this.props.checkMode ?
-                `Зашифрованный текст: ${encodedText} \n
-                Расшифрованный текст: ${decodedText}` :
-              `Зашифрованный текст: ${encodedText}`}
+          <div className={cx('output-area__encode-text', {
+            'output-area__encode-text_check-mode': (this.props.checkMode && this.props.decodedText),
+          })}>
+            { getOutputData() }
           </div>
         </div>
       </div>

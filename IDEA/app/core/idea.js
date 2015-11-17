@@ -53,13 +53,13 @@ const xgcd = (a, b) => {
   const [ g, y, x ] = xgcd(mod(b, a), a);
 
   return [g, x - Math.floor(b / a) * y, y];
- };
+};
 
 const modInv = (val, size = 16) => {
   const valNumber = val.length ? BitArray.toNumber(val.slice().reverse()) : val;
-  const [ g, x, y ] = xgcd(valNumber, MULTIPLY_CONST);
+  const [ g, x ] = xgcd(valNumber, MULTIPLY_CONST);
   if (g !== 1) {
-    throw 'modular inverse does not exist';
+    throw new Error('modular inverse does not exist');
   }
 
   const result = mod(x, MULTIPLY_CONST);

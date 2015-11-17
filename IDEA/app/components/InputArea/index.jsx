@@ -37,6 +37,7 @@ export default class Application extends React.Component {
       shakeInfo: false,
       encrypt: false,
       decodeMode: false,
+      hoverAnimation: false,
     };
   }
 
@@ -64,6 +65,7 @@ export default class Application extends React.Component {
 
     this.setState({
       text: generateText(64),
+      showTextError: false,
     });
 
     return false;
@@ -74,9 +76,21 @@ export default class Application extends React.Component {
 
     this.setState({
       key: generateText(128),
+      showKeyError: false,
     });
 
     return false;
+  }
+
+  checkData = (e) => {
+    if (!this.state.text || !this.state.key) {
+      e.preventDefault();
+
+      this.setState({
+        showTextError: true,
+        showKeyError: true,
+      });
+    }
   }
 
   textChange = (e) => {
@@ -85,6 +99,7 @@ export default class Application extends React.Component {
     }
     this.setState({
       text: e.target.value,
+      showTextError: false,
     });
   }
 
@@ -94,6 +109,20 @@ export default class Application extends React.Component {
     }
     this.setState({
       key: e.target.value,
+      showKeyError: false,
+    });
+  }
+
+  startHoverAnimation = () => {
+    this.setState({
+      hoverAnimation: true,
+    });
+  }
+
+
+  stopHoverAnimation = () => {
+    this.setState({
+      hoverAnimation: false,
     });
   }
 
@@ -110,6 +139,8 @@ export default class Application extends React.Component {
           <form
             className='input-area__form'
             onSubmit={this.props.setTextToCrypt}
+            onMouseOver={this.startHoverAnimation}
+            onMouseOut={this.stopHoverAnimation}
           >
             <InfoMessage
               className='input-area__info-message'
@@ -119,7 +150,7 @@ export default class Application extends React.Component {
             <div className='input-area__row'>
               <Input
                 className={cx('input-area__input', {
-                  'input_type_error': this.state.showEmailError,
+                  'input_type_error': this.state.showTextError,
                 })}
                 value={this.state.text}
                 name='text'
@@ -131,17 +162,25 @@ export default class Application extends React.Component {
                   'input-area__type-button_decode': this.props.decodeMode,
                 })}
                 onClick={this.props.changeMode}
+                title='Change mode(code|decode)'
               ></div>
-              <Button
-                className='input-area__button'
-                inProgress={this.state.inProgress}
-                onClick = {this.setGeneratedText}
-              >{this.state.inProgress ? 'Generating' : 'Generate'}</Button>
+              <Motion
+                defaultStyle={{x: spring(500)}}
+                style={{x: spring(this.state.hoverAnimation ? 0 : 500, [140, 22])}}
+                >
+                {interpolatedStyle => <div
+                  className='input-area__button input-area__button_generate'
+                  style={{transform: `translateX(${interpolatedStyle.x}px)`}}
+                  onClick = {this.setGeneratedText}
+                  title='Generate text'
+                ><span className='symbol'>⚙</span></div>
+                }
+              </Motion>
             </div>
             <div className='input-area__row'>
               <Input
                 className={cx('input-area__input', {
-                  'input_type_error': this.state.showEmailError,
+                  'input_type_error': this.state.showKeyError,
                 })}
                 value={this.state.key}
                 name='key'
@@ -149,30 +188,34 @@ export default class Application extends React.Component {
                 onChange={this.keyChange}
               />
               <div
-                className={cx('input-area__type-button', {
-                  'input-area__type-button_decode': this.props.decodeMode,
+                className={cx('input-area__button input-area__check-mode', {
+                  'input-area__check-mode_active': this.props.checkMode,
                 })}
-                onClick={this.props.changeMode}
-              ></div>
-              <Button
-                className='input-area__button'
-                inProgress={this.state.inProgress}
-                onClick = {this.setGeneratedKey}
-              >{this.state.inProgress ? 'Generating' : 'Generate'}</Button>
+                onClick={this.props.changeCheckMode}
+                title='Change checkMode'
+              >
+                <span className='symbol'>♻</span>
+              </div>
+               <Motion
+                defaultStyle={{x: spring(500)}}
+                style={{x: spring(this.state.hoverAnimation ? 0 : 500, [140, 22])}}
+                >
+                {interpolatedStyle => <div
+                  className='input-area__button input-area__button_generate'
+                  style={{transform: `translateX(${interpolatedStyle.x}px)`}}
+                  onClick = {this.setGeneratedKey}
+                  title='Generate key'
+                ><span className='symbol'>⚙</span></div>
+                }
+              </Motion>
             </div>
             <div className='input-area__row_submit'>
               <Button
-                className='input-area__submit-button input-area__submit-button_left'
+                className='input-area__submit-button'
                 type='submit'
                 inProgress={this.state.inProgress}
+                onClick={this.checkData}
               >{this.state.inProgress ? 'Processing' : (this.props.decodeMode ? 'Decode' : 'Code')}</Button>
-              <Button
-                className = {cx('input-area__submit-button input-area__submit-button_right', {
-                    'input-area__submit-button_active': this.props.checkMode,
-                })}
-                inProgress={this.state.inProgress}
-                onClick={this.props.changeCheckMode}
-              >CheckMode</Button>
             </div>
           </form>
         </div>

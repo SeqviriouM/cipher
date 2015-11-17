@@ -3,7 +3,7 @@
 
 .output-area
 {
-    height: 300px;
+    height: 320px;
     padding: 20px;
 
     text-align: center;
@@ -21,6 +21,17 @@
 
         border: 1px dashed white;
         border-radius: 5px;
+
+        &_check-mode
+        {
+            padding: 10px;
+        }
+
+
+        p
+        {
+            margin: 5px 0;
+        }
 
         span
         {
