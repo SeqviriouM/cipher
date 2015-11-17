@@ -36,21 +36,31 @@ export default class Application extends React.Component {
     const inputText = text.split('').map(item => +item);
     const inputKey = key.split('').map(item => +item);
 
-    if (!this.state.decodeMode) {
+    if (this.state.checkMode) {
+      const encodedText = crypt(inputText, inputKey);
+      const decodedText = decrypt(encodedText, inputKey);
+
+      this.setState({
+        coding: (e.target.text.value.length !== 0) ? true : false,
+        codingText: e.target.text.value,
+        encodedText,
+        decodedText,
+      });
+    } else if (!this.state.decodeMode) {
       const outputText = crypt(inputText, inputKey);
 
       this.setState({
         coding: (e.target.text.value.length !== 0) ? true : false,
         codingText: e.target.text.value,
-        encodeText: outputText,
+        encodedText: outputText,
       });
     } else {
-      const outputText = decrypt(inputText, inputKey);
+      const encodedText = decrypt(inputText, inputKey);
 
       this.setState({
         coding: (e.target.text.value.length !== 0) ? true : false,
         codingText: e.target.text.value,
-        encodeText: outputText,
+        encodedText,
       });
     }
 
@@ -69,9 +79,12 @@ export default class Application extends React.Component {
     });
   }
 
-  changeCheckMode = () => {
+  changeCheckMode = (e) => {
+    e.preventDefault();
+
     this.setState({
       checkMode: !this.state.checkMode,
+      decodedText: '',
     });
   }
 
@@ -82,15 +95,22 @@ export default class Application extends React.Component {
           setTextToCrypt={this.setTextToCrypt}
           hideOutputArea={this.hideOutputArea}
           changeMode={this.changeMode}
+          changeCheckMode={this.changeCheckMode}
           decodeMode={this.state.decodeMode}
           setText={this.setState}
           setKey={this.setKey}
-          text={this.state.text}
-          key={this.state.key}
           setGeneratedText={this.setGeneratedText}
           setGeneratedKey={this.setGeneratedKey}
+          text={this.state.text}
+          key={this.state.key}
+          checkMode={this.state.checkMode}
         />
-        <OutputArea coding={this.state.coding} encodeText={this.state.encodeText}/>
+        <OutputArea
+          coding={this.state.coding}
+          encodedText={this.state.encodedText}
+          decodedText={this.state.decodedText}
+          checkMode={this.state.checkMode}
+        />
       </div>
     );
   }

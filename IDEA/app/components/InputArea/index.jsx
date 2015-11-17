@@ -13,13 +13,15 @@ export default class Application extends React.Component {
     setTextToCrypt: PropTypes.func,
     hideOutputArea: PropTypes.func,
     changeMode: PropTypes.func,
-    decodeMode: PropTypes.bool,
+    changeCheckMode: PropTypes.func,
     setText: PropTypes.func,
     setKey: PropTypes.func,
-    text: PropTypes.string,
-    key: PropTypes.string,
     setGeneratedText: PropTypes.func,
     setGeneratedKey: PropTypes.func,
+    text: PropTypes.string,
+    key: PropTypes.string,
+    decodeMode: PropTypes.bool,
+    checkMode: PropTypes.bool,
   };
 
 
@@ -163,12 +165,14 @@ export default class Application extends React.Component {
                 className='input-area__submit-button input-area__submit-button_left'
                 type='submit'
                 inProgress={this.state.inProgress}
-              >{this.state.inProgress ? 'Processing' : 'Code'}</Button>
+              >{this.state.inProgress ? 'Processing' : (this.props.decodeMode ? 'Decode' : 'Code')}</Button>
               <Button
-                className='input-area__submit-button input-area__submit-button_right'
-                type='submit'
+                className = {cx('input-area__submit-button input-area__submit-button_right', {
+                    'input-area__submit-button_active': this.props.checkMode,
+                })}
                 inProgress={this.state.inProgress}
-              >{this.state.inProgress ? 'Processing' : 'Check'}</Button>
+                onClick={this.props.changeCheckMode}
+              >CheckMode</Button>
             </div>
           </form>
         </div>

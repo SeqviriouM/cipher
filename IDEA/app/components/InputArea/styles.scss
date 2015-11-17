@@ -156,6 +156,10 @@
             border-bottom-right-radius: 0;
             border-right: 1px solid black;
         }
+
+        &_active {
+            background: #14cdff;
+        }
     }
     &__tabs
     {
