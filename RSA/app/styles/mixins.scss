@@ -1,0 +1,34 @@
+.clearfix
+{
+    &:after
+    {
+        display: table;
+        clear: both;
+
+        content: '';
+    }
+}
+
+.ellipsis
+{
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@mixin placeholder
+{
+    &::-webkit-input-placeholder
+    {
+        @content
+    }
+    &::-moz-placeholder
+    {
+        @content
+    }
+    &:-ms-input-placeholder
+    {
+        @content
+    }
+}

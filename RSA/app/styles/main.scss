@@ -1,0 +1,38 @@
+@import '~styles/variables.scss';
+@import '~styles/colors.scss';
+
+html,
+body
+{
+    height: 100%;
+}
+
+html
+{
+    box-sizing: border-box;
+}
+
+body
+{
+    font: 300 16px/18px Roboto, sans-serif;
+
+    margin: 0;
+
+    color: $c-main_text;
+    background: $c-main_bg;
+    background-size: cover;
+}
+
+.cipher
+{
+    overflow: hidden;
+
+    height: 100vh;
+}
+
+*,
+*:before,
+*:after
+{
+    box-sizing: inherit;
+}
