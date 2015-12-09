@@ -28,7 +28,7 @@ const {E, D, N} = (() => {
   const n = bigInt(p).multiply(q).value;
   const fi = bigInt(p - 1).multiply(q - 1);
   const e = getE(fi.divide(2), fi);
-  const d = xgcd(e, fi) > 0 ? xgcd(e, fi)[0] : (fi + xgcd(e, fi)[0]);
+  const d = xgcd(e, fi)[0] > 0 ? xgcd(e, fi)[0] : (fi + xgcd(e, fi)[0]);
 
   return { E: e, D: d, N: n};
 })();
